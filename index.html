@@ -66,27 +66,35 @@
     </div>
 
     <script>
-        function sendMessage() {
+        async function sendMessage() {
             let userInput = document.getElementById("user-input").value;
             let chatbox = document.getElementById("chatbox");
 
             if (userInput.trim() === "") return;
 
             // Add user message to chatbox
-            let userMessage = `<p><strong>You:</strong> ${userInput}</p>`;
-            chatbox.innerHTML += userMessage;
+            chatbox.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
 
-            // Placeholder AI response
-            let aiResponse = `<p><strong>NeuroTutor AI:</strong> Thinking...</p>`;
-            chatbox.innerHTML += aiResponse;
+            // Show AI is thinking
+            let aiResponseElement = document.createElement("p");
+            aiResponseElement.innerHTML = "<strong>NeuroTutor AI:</strong> Thinking...";
+            chatbox.appendChild(aiResponseElement);
 
             // Clear input
             document.getElementById("user-input").value = "";
 
-            // Simulate AI response after a delay
-            setTimeout(() => {
-                chatbox.innerHTML = chatbox.innerHTML.replace("Thinking...", "I am still learning! AI responses coming soon.");
-            }, 2000);
+            try {
+                let response = await fetch("http://localhost:3000/chat", {  // Change this to your deployed backend URL later
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: userInput })
+                });
+
+                let data = await response.json();
+                aiResponseElement.innerHTML = `<strong>NeuroTutor AI:</strong> ${data.reply}`;
+            } catch (error) {
+                aiResponseElement.innerHTML = `<strong>NeuroTutor AI:</strong> Error getting response.`;
+            }
         }
     </script>
 </body>

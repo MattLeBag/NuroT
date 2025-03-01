@@ -33,10 +33,61 @@
             overflow-y: auto;
             border-bottom: 1px solid #ccc;
             padding: 10px;
+            text-align: left;
         }
         #user-input {
             width: 80%;
             padding: 8px;
+            margin-top: 10px;
         }
         button {
-            background-color: #
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to NeuroTutor AI</h1>
+    <p>This is an AI-powered tutor for neurodiverse children.</p>
+
+    <div id="chat-container">
+        <div id="chatbox"></div>
+        <input type="text" id="user-input" placeholder="Type your question..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            let userInput = document.getElementById("user-input").value;
+            let chatbox = document.getElementById("chatbox");
+
+            if (userInput.trim() === "") return;
+
+            // Add user message to chatbox
+            let userMessage = `<p><strong>You:</strong> ${userInput}</p>`;
+            chatbox.innerHTML += userMessage;
+
+            // Placeholder AI response
+            let aiResponse = `<p><strong>NeuroTutor AI:</strong> Thinking...</p>`;
+            chatbox.innerHTML += aiResponse;
+
+            // Clear input
+            document.getElementById("user-input").value = "";
+
+            // Simulate AI response after a delay
+            setTimeout(() => {
+                chatbox.innerHTML = chatbox.innerHTML.replace("Thinking...", "I am still learning! AI responses coming soon.");
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
